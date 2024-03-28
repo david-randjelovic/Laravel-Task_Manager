@@ -22,7 +22,8 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group( function () {
-    Route::patch('/user/{id}', [UserController::class, 'update']);
+    Route::patch('/user', [UserController::class, 'update']);
+    Route::post('/user/upload-profile-picture', [UserController::class, 'uploadPicture']);
 
     Route::get('/lists', [ListController::class, 'index']);
     Route::post('/lists', [ListController::class, 'store']);

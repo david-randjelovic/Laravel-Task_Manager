@@ -5,13 +5,13 @@ namespace App\Http\Controllers\Api;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        // Find the user by ID
-        $user = User::findOrFail($id);
+        $user = auth()->user();
 
         $validated = $request->validate([
             'department' => 'required|string|max:255',
@@ -25,5 +25,20 @@ class UserController extends Controller
         $user->update($validated);
 
         return response()->json($user);
+    }
+
+    public function uploadPicture(Request $request)
+    {
+        $request->validate([
+            'image' => 'required|image|max:2048',
+        ]);
+
+        $user = auth()->user();
+        $path = $request->file('image')->store('profile_pictures', 'public');
+
+        $user->profile_picture = $path;
+        $user->save();
+
+        return response()->json(['path' => $path], 201);
     }
 }

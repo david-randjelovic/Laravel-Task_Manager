@@ -26,6 +26,7 @@ class User extends Authenticatable
         'organization',
         'location',
         'password',
+        'profile_picture',
     ];
 
     /**
